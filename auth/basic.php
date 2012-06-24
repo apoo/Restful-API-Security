@@ -8,7 +8,8 @@
  */
 
 include_once ('../config/user.php');
-class Basic {
+include_once ('base.php');
+class Basic extends Base {
 
     protected $authorization = null;
 
@@ -24,38 +25,11 @@ class Basic {
         $data = $this->getInfo();
         $user = $this->getUser($data);
         if(empty($user)){
-            $this->setAuthHeader();
+            $this->setAuthHeader("Basic");
         }
     }
 
-    /**
-     * Setting HTTP Authorization header
-     * @access private
-     * @return void
-     */
-    private function setAuthHeader(){
-        header("WWW-Authenticate: Basic realm='protected resource'");
-        exit();
-    }
 
-    /**
-     * Method to check if Authorization header has been set
-     * @return Boolean
-     * @access private
-     */
-    private function authHeader(){
-        if(array_key_exists('Authorization', $_SERVER)){
-            $this->authorization = $_SERVER['Authorization'];
-            return true;
-        }else if(function_exists('apache_request_headers')){
-            $header = apache_request_headers();
-            if(array_key_exists('Authorization',$header)){
-                $this->authorization = $header['Authorization'];
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * Method to separate email and secret key from Authorization header
@@ -87,16 +61,6 @@ class Basic {
             }
         }
         return false;
-    }
-
-    /**
-     * Decoding a string with Base 64
-     * @param String $str;
-     * @return String base64_decode($str)
-     * @access private
-     */
-    private function decode($str){
-        return base64_decode($str);
     }
 }
 ?>
