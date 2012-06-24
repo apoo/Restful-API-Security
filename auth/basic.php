@@ -21,11 +21,16 @@ class Basic extends Base {
         if(empty($isAuthSet)){
             $this->setAuthHeader("Basic");
         }
-        $data = $this->getInfo();
+        $data = $this->getBasic();
         $user = $this->getUser($data);
         if(empty($user)){
             $this->setAuthHeader("Basic");
         }
+    }
+
+    public function __destruct() {
+        unset($_SERVER['PHP_AUTH_USER']);
+        unset($_SERVER['PHP_AUTH_PW']);
     }
 
 
@@ -34,16 +39,11 @@ class Basic extends Base {
      * @return Mixed either $data or false
      * @access private
      */
-    private function getInfo(){
+    private function getBasic(){
         if(isset($_SERVER['PHP_AUTH_USER'])){
             $email = $_SERVER['PHP_AUTH_USER'];
             $password = $_SERVER['PHP_AUTH_PW'];
             $data = array('email' => $email, 'secret' => $password);
-            return $data;
-        }else if(!empty($this->authorization)){
-            $decodeData = $this->decode($this->authorization);
-            list($email,$secret) = explode(':', $decodeData);
-            $data = array('email' => $email, 'secret' => $secret);
             return $data;
         }
         return false;
