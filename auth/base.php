@@ -8,6 +8,7 @@
  */
 class Base {
 
+    protected $authorization = null;
     /**
      * Method to check if Authorization header has been set
      * @return Boolean

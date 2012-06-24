@@ -11,7 +11,6 @@ include_once ('../config/user.php');
 include_once ('base.php');
 class Basic extends Base {
 
-    protected $authorization = null;
 
     /**
      * Class initialization
@@ -36,7 +35,12 @@ class Basic extends Base {
      * @access private
      */
     private function getInfo(){
-        if(!empty($this->authorization)){
+        if(isset($_SERVER['PHP_AUTH_USER'])){
+            $email = $_SERVER['PHP_AUTH_USER'];
+            $password = $_SERVER['PHP_AUTH_PW'];
+            $data = array('email' => $email, 'secret' => $password);
+            return $data;
+        }else if(!empty($this->authorization)){
             $decodeData = $this->decode($this->authorization);
             list($email,$secret) = explode(':', $decodeData);
             $data = array('email' => $email, 'secret' => $secret);
