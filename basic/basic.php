@@ -10,11 +10,16 @@
 include_once ('../config/user.php');
 class Basic {
 
-    protected $authorization = array();
+    protected $authorization = null;
 
     public function __construct(){
         $isAuthSet = $this->authHeader();
         if(empty($isAuthSet)){
+            $this->setAuthHeader();
+        }
+        $data = $this->getInfo();
+        $user = $this->getUser($data);
+        if(empty($user)){
             $this->setAuthHeader();
         }
     }
@@ -38,12 +43,29 @@ class Basic {
         return false;
     }
 
-    private function getBlah(){
-        list($email,$secret) = explode(':', $authorization);
+    private function getInfo(){
+        if(!empty($this->authorization)){
+            list($email,$secret) = explode(':', $this->authorization);
+            $data = array('email' => $email, 'secret' => $secret);
+            return $data;
+        }
+        return false;
     }
 
-    public function getUser(){
-        return Config::getUser();
+    public function getUser($data){
+        $user = Config::getUser();
+        if($user['email'] === $data['email']){
+            $secret = $user['secret'];
+            $decodeStr = $this->decode($data['secret']);
+            if($secret == $decodeStr){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function decode($str){
+        return base64_decode($str);
     }
 }
 ?>
