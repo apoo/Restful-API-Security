@@ -20,7 +20,7 @@ class Basic extends Base {
     public function __construct(){
         $isAuthSet = $this->authHeader();
         if(empty($isAuthSet)){
-            $this->setAuthHeader();
+            $this->setAuthHeader("Basic");
         }
         $data = $this->getInfo();
         $user = $this->getUser($data);
