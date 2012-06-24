@@ -8,6 +8,7 @@
  */
 class Base {
 
+
     private $realm = 'Protected Resource';
     protected $authorization = null;
     /**
@@ -41,7 +42,7 @@ class Base {
                 break;
             case 'digest':
                 $authHeader = "WWW-Authenticate: Digest realm='" .  $this->realm . "'"
-                . ',qop="auth",nonce="'.uniqid().'",opaque="'.md5("wicked").'"';
+                . ',qop="auth",nonce="'.uniqid().'",opaque="'. md5($this->realm) .'"';
                 break;
         }
         header($authHeader);
