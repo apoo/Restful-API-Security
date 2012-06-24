@@ -8,8 +8,8 @@
  */
 class Config{
     private static $credentials = array(
-        'email' => 'apoo0@hotmail.com',
-        'password' => 'secret'
+        'email' => 'user@example.com',
+        'secret' => 'secret'
     );
 
     public static function getUser(){
