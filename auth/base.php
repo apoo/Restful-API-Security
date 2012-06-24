@@ -33,7 +33,7 @@ class Base {
      * @return void
      */
     protected function setAuthHeader($name){
-        switch($name){
+        switch(strtolower($name)){
             case 'basic':
                 $authHeader = "WWW-Authenticate: Basic realm='protected resource'";
                 break;
