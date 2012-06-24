@@ -2,6 +2,7 @@
 include_once '../auth/basic.php';
 $t = new Basic();
 ?>
+<!DOC_TYPE html>
 <html>
 <head>
     <title> HTTP Restufull Authentication </title>
