@@ -9,7 +9,7 @@
 class Base {
 
 
-    private $realm = 'Protected Resource';
+    protected $realm = 'Protected Resource';
     protected $authorization = null;
     /**
      * Method to check if Authorization header has been set

@@ -7,6 +7,7 @@
  * @version 1.0
  */
 include_once ('base.php');
+include_once ('../config/user.php');
 class Digest extends Base {
 
     public function __construct(){
@@ -15,8 +16,10 @@ class Digest extends Base {
         }
         $txt = $this->getDigest();
         $data = $this->parseDigest($txt);
-        print_r($data);
-        die();
+        $response = $this->generateResponse($data);
+        if($response != $data['response']){
+            $this->setAuthHeader("Digest");
+        }
     }
 
     private function getDigest(){
@@ -44,6 +47,14 @@ class Digest extends Base {
             unset($needed_parts[$m[1]]);
         }
         return $needed_parts ? false : $data;
+    }
+
+    private function generateResponse($data){
+        $user = Config::getUser();
+        $ha1 = md5($data['username'] . ":" . $this->realm . ":" . $user['secret']);
+        $ha2 = md5($_SERVER['REQUEST_METHOD'] . ":" . $data['uri'] );
+        $ha3 = md5($ha1 . ":" . $data['nonce'] . ":" . $data['nc'] . ":" . $data['cnonce'] . ":" . $data['qop'] . ":" . $ha2 );
+        return $ha3;
     }
 }
 ?>
