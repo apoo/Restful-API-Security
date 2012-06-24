@@ -64,7 +64,8 @@ class Basic {
      */
     private function getInfo(){
         if(!empty($this->authorization)){
-            list($email,$secret) = explode(':', $this->authorization);
+            $decodeData = $this->decode($this->authorization);
+            list($email,$secret) = explode(':', $decodeData);
             $data = array('email' => $email, 'secret' => $secret);
             return $data;
         }
@@ -81,8 +82,7 @@ class Basic {
         $user = Config::getUser();
         if($user['email'] === $data['email']){
             $secret = $user['secret'];
-            $decodeStr = $this->decode($data['secret']);
-            if($secret == $decodeStr){
+            if($secret == $data['secret']){
                 return $user;
             }
         }
