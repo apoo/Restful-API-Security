@@ -30,7 +30,6 @@ class Basic extends Base {
     }
 
 
-
     /**
      * Method to separate email and secret key from Authorization header
      * @return Mixed either $data or false
@@ -45,6 +44,7 @@ class Basic extends Base {
         }
         return false;
     }
+
 
     /**
      * Check the sent email and secret data with our user records
