@@ -15,7 +15,5 @@ class Digest extends Base {
             $this->setAuthHeader("Digest");
         }
     }
-
-
 }
 ?>

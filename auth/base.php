@@ -8,6 +8,7 @@
  */
 class Base {
 
+    private $realm = 'Protected Resource';
     protected $authorization = null;
     /**
      * Method to check if Authorization header has been set
@@ -36,10 +37,11 @@ class Base {
     protected function setAuthHeader($name){
         switch(strtolower($name)){
             case 'basic':
-                $authHeader = "WWW-Authenticate: Basic realm='protected resource'";
+                $authHeader = "WWW-Authenticate: Basic realm='" . $this->realm . "'";
                 break;
             case 'digest':
-                $authHeader = "WWW-Authenticate: Digest realm='protected resource'";
+                $authHeader = "WWW-Authenticate: Digest realm='" .  $this->realm . "'"
+                . ',qop="auth",nonce="'.uniqid().'",opaque="'.md5("wicked").'"';
                 break;
         }
         header($authHeader);
